@@ -1,0 +1,7 @@
+.banner-content {
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+    url(../../assets/images/background_landing.jfif) no-repeat center center;
+  background-size: cover;
+  background-attachment: fixed;
+  text-align: center;
+}

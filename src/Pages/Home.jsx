@@ -3,6 +3,7 @@ import TopBar from "../components/TopBar/TopBar";
 import Layout from "../Layout/Layout";
 import { getTopBarMenu } from "../services/getTopBarMenuService";
 import React from "react";
+import Banner from "../components/Banner/Banner";
 
 const Home = () => {
   const [topBar, setTopBar] = useState([]);
@@ -24,7 +25,9 @@ const Home = () => {
   return (
     <>
       <TopBar topBarMenuData={topBar} />
-      <Layout />
+      <Layout>
+        <Banner />
+      </Layout>
     </>
   );
 };
