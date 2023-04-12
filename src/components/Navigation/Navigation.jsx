@@ -89,7 +89,7 @@ const Navigation = () => {
   ];
   return (
     <header
-      className="sticky top-0 w-full transiton-all duration-100 ease-out bg-white md:bg-transparent z-20 shadow-menu md:shadow-none backdrop-blur-2xl
+      className="sticky top-0 w-full transiton-all duration-100 ease-out z-20 shadow-menu md:shadow-none backdrop-blur-2xl
         blur-0 opacity-100"
     >
       <div className="container xl:max-w-screen-xl top-0 py-2 md:py-2 md:px-0 mx-auto">

@@ -1,13 +1,33 @@
-import React from "react";
-const TopBar = ({ topBarMenuData }) => {
+import React, { useEffect, useState } from "react";
+import { getTopBarMenu } from "../../services/getTopBarMenuService";
+const TopBar = () => {
+  const [topBar, setTopBar] = useState([]);
+  useEffect(() => {
+    const renderTopBarMenu = async () => {
+      try {
+        const { data } = await getTopBarMenu();
+        const topBarMenuData = data;
+        const shuffledArray = topBarMenuData.sort(
+          (a, b) => 0.5 - Math.random()
+        );
+        setTopBar(shuffledArray.slice(0, 4));
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    renderTopBarMenu();
+  }, []);
   return (
     <div className="w-full bg-gray-200 hidden lg:block">
       <div className="container xl:max-w-screen-2xl mx-auto py-2 md:py-3 px-8">
         <div className="w-full">
           <nav className="flex justify-between items-center">
             <ul className="flex justify-center items-center text-sm text-slate-700">
-              {topBarMenuData.map((menu) => (
-                <li className="ml-4 hover:text-blue-500 transition-all duration-150" key={menu.id}>
+              {topBar.map((menu) => (
+                <li
+                  className="ml-4 hover:text-blue-500 transition-all duration-150"
+                  key={menu.id}
+                >
                   <a href={menu.href}>{menu.title}</a>
                 </li>
               ))}
