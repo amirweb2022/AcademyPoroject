@@ -39,7 +39,7 @@ const Banner = () => {
             </div>
             <div className="w-full">
               <span className="text-white text-xl">
-                کاربر توی سبزلرن ثبت نام کردن
+                کاربر توی فرانت هوکس ثبت نام کردن
               </span>
             </div>
           </div>
