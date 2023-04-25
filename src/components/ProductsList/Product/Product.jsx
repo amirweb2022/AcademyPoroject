@@ -2,9 +2,9 @@ import { Link } from "react-router-dom";
 
 const Product = ({ course }) => {
   return (
-    <div className="w-full mb-3 md:mb-0 ml-2 md:w-1/2 lg:w-1/4 h-full p-2 bg-white flex justify-center items-center flex-col rounded-md my-4 shadow-lg">
-      <Link to={`/singleProduct/${course._id}`} className="w-full">
-        <div className="w-full h-full flex justify-center items-center -mt-7 rounded-lg overflow-hidden shadow-lg relative">
+    <div className="w-full mb-3 md:mb-4 ml-2 md:w-1/2 lg:w-1/4 h-full p-2 bg-white flex justify-center items-center flex-col rounded-2xl my-4 shadow-lg">
+      <Link to={`/singleProduct/${course.shortName}`} className="w-full">
+        <div className="w-full h-full flex justify-center items-center -mt-7 rounded-2xl overflow-hidden shadow-lg shadow-slate-400 relative">
           <img
             src={`http://localhost:4000/courses/covers/${course.cover}`}
             alt={course.name}
@@ -34,7 +34,7 @@ const Product = ({ course }) => {
         </div>
       </Link>
       <div className="flex justify-start items-start w-full py-3">
-        <Link to={`/singleProduct/${course._id}`}>
+        <Link to={`/singleProduct/${course.shortName}`}>
           <h2 className="text-lg font-bold text-slate-700 hover:text-blue-600">
             {course.name}
           </h2>
@@ -47,7 +47,7 @@ const Product = ({ course }) => {
         </span>
       </div>
       <div className="flex justify-start items-start w-full py-2">
-        <Link to={`/singleProduct/${course._id}`}>
+        <Link to={`/singleProduct/${course.shortName}`}>
           <h2 className="text-sm font-bold text-blue-600">
             مشاهده اطلاعات دوره
           </h2>
@@ -55,7 +55,7 @@ const Product = ({ course }) => {
       </div>
       <div className="flex justify-between items-center w-full py-3 border-t-2 border-gray-100 mt-2">
         <div className="w-2/5">
-          <button className="text-white w-full font-bold transtion-all duration-150 bg-blue-500 hover:bg-blue-400 hover:shadow-blue-400 rounded-xl shadow-lg shadow-blue-500 py-3">
+          <button className="text-white w-full font-bold transtion-all duration-150 bg-blue-500 hover:bg-blue-400 hover:shadow-blue-300 rounded-xl shadow-lg shadow-blue-300 py-3">
             ثبت نام دوره
           </button>
         </div>
