@@ -6,10 +6,15 @@ import Wrapper from "../components/Wrapper/Wrapper";
 import CoursesHeader from "../components/CoursesHeader/CoursesHeader";
 import { Link } from "react-router-dom";
 import { getAllProduct } from "../services/getAllProductService";
+import { getPopularProduct } from "../services/getPopularProductService";
+import { getPersellProduct } from "../services/getPersellProductServises";
 import ProductsList from "../components/ProductsList/ProductsList";
 import ServicesSite from "../components/ServicesSite/ServicesSite";
+import ProductSlider from "../components/ProductSlider/ProductSlider";
 const Home = () => {
   const [allProducts, setAllProducts] = useState(null);
+  const [popularProduct, setPopularProduct] = useState([]);
+  const [persellProduct, setPersellProduct] = useState([]);
   useEffect(() => {
     const getAndShowCourses = async () => {
       try {
@@ -19,7 +24,25 @@ const Home = () => {
         console.log(error);
       }
     };
+    const getAndShowPopulaCourses = async () => {
+      try {
+        const { data } = await getPopularProduct();
+        setPopularProduct(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    const getAndShowPersellProduct = async () => {
+      try {
+        const { data } = await getPersellProduct();
+        setPersellProduct(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
     getAndShowCourses();
+    getAndShowPopulaCourses();
+    getAndShowPersellProduct();
   }, []);
   return (
     <>
@@ -43,6 +66,9 @@ const Home = () => {
             <ServicesSite />
           </div>
           <CoursesHeader title="محبوب ترین دوره ها" />
+          <ProductSlider arr={popularProduct} />
+          <CoursesHeader title="دوره های درحال پیش فروش" />
+          <ProductSlider arr={persellProduct} />
         </Wrapper>
       </Layout>
     </>

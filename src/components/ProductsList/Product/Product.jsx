@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 
-const Product = ({ course }) => {
+const Product = ({ course , display }) => {
   return (
-    <div className="w-full mb-3 md:mb-4 ml-2 md:w-1/2 lg:w-1/4 h-full p-2 bg-white flex justify-center items-center flex-col rounded-2xl my-4 shadow-lg">
+    <div className={`w-full mb-3 md:mb-4 ml-2 ${display} h-full p-2 bg-white flex justify-center items-center flex-col rounded-2xl my-4 shadow-lg`}>
       <Link to={`/singleProduct/${course.shortName}`} className="w-full">
         <div className="w-full h-full flex justify-center items-center -mt-7 rounded-2xl overflow-hidden shadow-lg shadow-slate-400 relative">
           <img
