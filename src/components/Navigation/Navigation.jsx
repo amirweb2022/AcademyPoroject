@@ -67,7 +67,7 @@ const Navigation = () => {
       to: "/ContactUs",
     },
     {
-      display: "بلاگ ها",
+      display: "مقاله ها",
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
