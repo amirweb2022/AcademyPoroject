@@ -84,7 +84,7 @@ const Navigation = () => {
           />
         </svg>
       ),
-      to: "/blogs",
+      to: "/articles",
     },
   ];
   return (
