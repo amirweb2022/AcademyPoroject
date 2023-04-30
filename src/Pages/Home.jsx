@@ -8,13 +8,16 @@ import { Link } from "react-router-dom";
 import { getAllProduct } from "../services/getAllProductService";
 import { getPopularProduct } from "../services/getPopularProductService";
 import { getPersellProduct } from "../services/getPersellProductServises";
+import { getAllArticles } from "../services/getAllArticlesService";
 import ProductsList from "../components/ProductsList/ProductsList";
 import ServicesSite from "../components/ServicesSite/ServicesSite";
 import ProductSlider from "../components/ProductSlider/ProductSlider";
+import ArticlesList from "../components/ArticlesList/ArticlesList";
 const Home = () => {
   const [allProducts, setAllProducts] = useState(null);
   const [popularProduct, setPopularProduct] = useState([]);
   const [persellProduct, setPersellProduct] = useState([]);
+  const [articles, setArticles] = useState([]);
   useEffect(() => {
     const getAndShowCourses = async () => {
       try {
@@ -40,9 +43,18 @@ const Home = () => {
         console.log(error);
       }
     };
+    const getAndShowArticles = async () => {
+      try {
+        const { data } = await getAllArticles();
+        setArticles(data.slice(0,3));
+      } catch (error) {
+        console.log(error);
+      }
+    };
     getAndShowCourses();
     getAndShowPopulaCourses();
     getAndShowPersellProduct();
+    getAndShowArticles();
   }, []);
   return (
     <>
@@ -69,10 +81,20 @@ const Home = () => {
           <ProductSlider arr={popularProduct} />
           <CoursesHeader title="دوره های درحال پیش فروش" />
           <ProductSlider arr={persellProduct} />
+          <CoursesHeader title="جدید ترین مقاله ها">
+            <div>
+              <Link
+                to="/articles"
+                className="bg-green-500 font-bold text-sm shadow-md shadow-green-500 rounded-md p-2 md:px-3 md:py-2 text-white"
+              >
+                تمامیه مقاله ها
+              </Link>
+            </div>
+          </CoursesHeader>
+          <ArticlesList data={articles} />
         </Wrapper>
       </Layout>
     </>
   );
 };
-
 export default React.memo(Home);
