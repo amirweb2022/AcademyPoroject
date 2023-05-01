@@ -197,7 +197,26 @@ const Navigation = () => {
                 </Link>
               </div>
               <div>
-                <AccountMenu />
+                <Link
+                  to="/singup"
+                  className="flex items-center shadow-md bg-transparent shadow-none text-slate-700 md:shadow-slate-400 justify-center md:text-white md:bg-blue-500 hover:bg-blue-400 transition-all duration-150 rounded-3xl ml-2 py-3 px-3 md:px-5"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width={1.5}
+                    stroke="currentColor"
+                    className="w-7 h-7 ml-1 font-bold"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75"
+                    />
+                  </svg>
+                  <p>ورود</p>
+                </Link>
               </div>
             </div>
           </nav>
