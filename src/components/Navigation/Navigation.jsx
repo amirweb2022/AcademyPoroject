@@ -198,8 +198,8 @@ const Navigation = () => {
               </div>
               <div>
                 <Link
-                  to="/singup"
-                  className="flex items-center shadow-md bg-transparent shadow-none text-slate-700 md:shadow-slate-400 justify-center md:text-white md:bg-blue-500 hover:bg-blue-400 transition-all duration-150 rounded-3xl ml-2 py-3 px-3 md:px-5"
+                  to="/login"
+                  className="flex items-center shadow-md bg-transparent shadow-none text-slate-700 md:shadow-slate-400 justify-center md:text-white md:bg-blue-500 hover:bg-blue-400 transition-all duration-150 rounded-3xl ml-2 p-3 md:px-5"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

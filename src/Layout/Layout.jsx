@@ -9,4 +9,4 @@ const Layout = ({ children }) => {
   );
 };
 
-export default React.memo(Layout);
+export default Layout;

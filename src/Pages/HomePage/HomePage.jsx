@@ -1,19 +1,19 @@
-import TopBar from "../components/TopBar/TopBar";
-import Layout from "../Layout/Layout";
+import TopBar from "../../components/TopBar/TopBar";
+import Layout from "../../Layout/Layout";
 import React, { useEffect, useState } from "react";
-import Banner from "../components/Banner/Banner";
-import Wrapper from "../components/Wrapper/Wrapper";
-import CoursesHeader from "../components/CoursesHeader/CoursesHeader";
+import Banner from "../../components/Banner/Banner";
+import Wrapper from "../../components/Wrapper/Wrapper";
+import CoursesHeader from "../../components/CoursesHeader/CoursesHeader";
 import { Link } from "react-router-dom";
-import { getAllProduct } from "../services/getAllProductService";
-import { getPopularProduct } from "../services/getPopularProductService";
-import { getPersellProduct } from "../services/getPersellProductServises";
-import { getAllArticles } from "../services/getAllArticlesService";
-import ProductsList from "../components/ProductsList/ProductsList";
-import ServicesSite from "../components/ServicesSite/ServicesSite";
-import ProductSlider from "../components/ProductSlider/ProductSlider";
-import ArticlesList from "../components/ArticlesList/ArticlesList";
-const Home = () => {
+import { getAllProduct } from "../../services/getAllProductService";
+import { getPopularProduct } from "../../services/getPopularProductService";
+import { getPersellProduct } from "../../services/getPersellProductServises";
+import { getAllArticles } from "../../services/getAllArticlesService";
+import ProductsList from "../../components/ProductsList/ProductsList";
+import ServicesSite from "../../components/ServicesSite/ServicesSite";
+import ProductSlider from "../../components/ProductSlider/ProductSlider";
+import ArticlesList from "../../components/ArticlesList/ArticlesList";
+const HomePage = () => {
   const [allProducts, setAllProducts] = useState(null);
   const [popularProduct, setPopularProduct] = useState([]);
   const [persellProduct, setPersellProduct] = useState([]);
@@ -97,4 +97,4 @@ const Home = () => {
     </>
   );
 };
-export default React.memo(Home);
+export default React.memo(HomePage);
