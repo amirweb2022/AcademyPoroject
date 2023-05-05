@@ -1,7 +1,7 @@
 import { Link, NavLink } from "react-router-dom";
 import Button from "@mui/material/Button";
 import Avatar from "@mui/material/Avatar";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import avataImage from "../../assets/images/avatar.jpg";
 import Tooltip from "@mui/material/Tooltip";
@@ -9,7 +9,24 @@ import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import TemporaryDrawer from "../TemporaryDrawer/TemporaryDrawer";
 import { Divider } from "@mui/material";
+import { useAuth } from "../../Providers/Auth/AuthProvider";
+import { getMe } from "../../services/getMeService";
 const Navigation = () => {
+  const [userData, setUserData] = useState(null);
+  const token = useAuth();
+  useEffect(() => {
+    if (token) {
+      const getMeData = async () => {
+        try {
+          const { data } = await getMe(token);
+          setUserData(data);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      getMeData();
+    }
+  }, [token]);
   const nav_Link = [
     {
       display: "خانه",
@@ -97,7 +114,7 @@ const Navigation = () => {
           <nav className="flex items-center justify-between">
             <div className="flex justify-center items-center">
               <div className="flex justify-center items-center md:hidden">
-                <TemporaryDrawer nav_Link={nav_Link} />
+                <TemporaryDrawer nav_Link={nav_Link} data={userData}/>
                 <div>
                   <Button sx={{ marginRight: "-10px" }}>
                     <NavLink to="/">
@@ -197,26 +214,30 @@ const Navigation = () => {
                 </Link>
               </div>
               <div>
-                <Link
-                  to="/login"
-                  className="flex items-center shadow-md bg-transparent shadow-none text-slate-700 md:shadow-slate-400 justify-center md:text-white md:bg-blue-500 hover:bg-blue-400 transition-all duration-150 rounded-3xl ml-2 p-3 md:px-5"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width={1.5}
-                    stroke="currentColor"
-                    className="w-7 h-7 ml-1 font-bold"
+                {userData ? (
+                  <AccountMenu data={userData}/>
+                ) : (
+                  <Link
+                    to="/login"
+                    className="flex items-center shadow-md bg-transparent shadow-none text-slate-700 md:shadow-slate-400 justify-center md:text-white md:bg-blue-500 hover:bg-blue-400 transition-all duration-150 rounded-3xl ml-2 p-3 md:px-5"
                   >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75"
-                    />
-                  </svg>
-                  <p>ورود</p>
-                </Link>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width={1.5}
+                      stroke="currentColor"
+                      className="w-7 h-7 ml-1 font-bold"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75"
+                      />
+                    </svg>
+                    <p>ورود</p>
+                  </Link>
+                )}
               </div>
             </div>
           </nav>
@@ -227,8 +248,12 @@ const Navigation = () => {
 };
 
 export default React.memo(Navigation);
-export function AccountMenu() {
+export function AccountMenu({data}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const clickHandler = () => {
+    localStorage.removeItem("authState");
+    window.location.reload();
+  };
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -269,6 +294,7 @@ export function AccountMenu() {
         PaperProps={{
           elevation: 0,
           sx: {
+            width : "200px",
             overflow: "visible",
             filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
             mt: 1.5,
@@ -283,23 +309,23 @@ export function AccountMenu() {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <div className="w-full flex py-2 px-1 justify-between items-center">
+        <div className="w-full flex py-2 px-1 justify-cenetr items-center">
           <div className="ml-4">
             <Link to="/profile">
               <Avatar
                 src={avataImage}
                 sx={{ minWidth: "50px", minHeight: "50px" }}
-                alt="Amir"
+                alt={data.username}
               />
             </Link>
           </div>
           <div className="flex flex-col justify-start items-start ml-2">
             <Link to="/profile">
               <span className="font-bold block text-gray-500 text-sm">
-                امیرمحمد حسین زاده
+                {data.name}
               </span>
             </Link>
-            <span className="block opacity-60 text-sm mt-1">09921103757</span>
+            <span className="block opacity-60 text-sm mt-1">{data.phone}</span>
           </div>
         </div>
         <Divider />
@@ -374,7 +400,7 @@ export function AccountMenu() {
             <p className="font-bold text-sm">سفارش های من</p>
           </Link>
         </div>
-        <div className="w-ful px-2 py-1">
+        <div className="w-ful px-2 py-1" onClick={clickHandler}>
           <Link className="w-full p-3 flex justify-start items-start text-gray-500 hover:bg-gray-100 rounded-md hover:text-red-500">
             <span>
               <svg

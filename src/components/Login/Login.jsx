@@ -2,6 +2,10 @@ import { Link } from "react-router-dom";
 import Input from "../../common/Input";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { loginUser } from "../../services/loginService";
+import { useAuthActions, useAuth } from "../../Providers/Auth/AuthProvider";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useEffect } from "react";
 const initialValues = {
   email: "",
   password: "",
@@ -11,8 +15,30 @@ const validationSchema = Yup.object({
   password: Yup.string().required("فیلد را پر کنید"),
 });
 const Login = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const setAuth = useAuthActions();
+  const auth = useAuth();
+  const navigate = useNavigate();
+  const redirect = searchParams.get("redirect") || "/";
+  useEffect(() => {
+    if (auth) navigate(redirect);
+  }, [redirect, auth]);
   const onSubmit = async (values) => {
-    console.log(values);
+    const userInfo = {
+      identifier: values.email,
+      password: values.password,
+    };
+    try {
+      const { data } = await loginUser(userInfo);
+      setAuth(data.accessToken);
+      localStorage.setItem(
+        "authState",
+        JSON.stringify({ token: data.accessToken })
+      );
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
   };
   const formik = useFormik({
     initialValues,

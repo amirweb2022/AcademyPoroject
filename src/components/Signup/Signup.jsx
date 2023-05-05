@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import Input from "../../common/Input";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { singupUser } from "../../services/signupService";
 const initialValues = {
   name: "",
   username: "",
@@ -23,7 +24,20 @@ const validationSchema = Yup.object({
 });
 const Signup = () => {
   const onSubmit = async (values) => {
-    console.log(values);
+    const userInfos = {
+      name: values.name,
+      username: values.username,
+      email: values.email,
+      phone: values.phonenumber,
+      password: values.password,
+      confirmPassword: values.password,
+    };
+    try {
+      const { data } = await singupUser(userInfos);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
   };
   const formik = useFormik({
     initialValues,
