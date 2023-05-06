@@ -5,7 +5,10 @@ import * as Yup from "yup";
 import { loginUser } from "../../services/loginService";
 import { useAuthActions, useAuth } from "../../Providers/Auth/AuthProvider";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
 const initialValues = {
   email: "",
   password: "",
@@ -16,6 +19,7 @@ const validationSchema = Yup.object({
 });
 const Login = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const [loading, setLoading] = useState(false);
   const setAuth = useAuthActions();
   const auth = useAuth();
   const navigate = useNavigate();
@@ -24,20 +28,26 @@ const Login = () => {
     if (auth) navigate(redirect);
   }, [redirect, auth]);
   const onSubmit = async (values) => {
+    setLoading(true);
     const userInfo = {
       identifier: values.email,
       password: values.password,
     };
     try {
       const { data } = await loginUser(userInfo);
+      setLoading(false);
       setAuth(data.accessToken);
       localStorage.setItem(
         "authState",
         JSON.stringify({ token: data.accessToken })
       );
+      toast.success("به فرانت هوکس خوش آمدید");
       navigate("/");
     } catch (error) {
-      console.log(error);
+      if (error.response.status === 401) {
+        setLoading(false);
+        toast.error("نام کاربری یا رمز عبور وجود ندارد");
+      }
     }
   };
   const formik = useFormik({
@@ -81,7 +91,19 @@ const Login = () => {
             className="w-full py-4 bg-blue-600 hover:opacity-90 shadow-lg shadow-gray-400 transtion-all duration-200 text-white my-2 rounded-2xl"
             type="submit"
           >
-            ورود
+            {loading ? (
+              <Box
+                sx={{
+                  display: "flex",
+                  width: "100%",
+                  justifyContent: "center",
+                }}
+              >
+                <CircularProgress color="inherit" />
+              </Box>
+            ) : (
+              "ورود"
+            )}
           </button>
         </div>
       </form>

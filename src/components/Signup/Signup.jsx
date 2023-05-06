@@ -1,8 +1,13 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import Input from "../../common/Input";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { singupUser } from "../../services/signupService";
+import { useAuth, useAuthActions } from "../../Providers/Auth/AuthProvider";
+import { toast } from "react-hot-toast";
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
+import { useEffect, useState } from "react";
 const initialValues = {
   name: "",
   username: "",
@@ -23,7 +28,17 @@ const validationSchema = Yup.object({
   password: Yup.string().required("فیلد را پر کنید"),
 });
 const Signup = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [loading, setLoading] = useState(false);
+  const setAuth = useAuthActions();
+  const auth = useAuth();
+  const navigate = useNavigate();
+  const redirect = searchParams.get("redirect") || "/";
+  useEffect(() => {
+    if (auth) navigate(redirect);
+  }, [redirect, auth]);
   const onSubmit = async (values) => {
+    setLoading(true);
     const userInfos = {
       name: values.name,
       username: values.username,
@@ -34,9 +49,15 @@ const Signup = () => {
     };
     try {
       const { data } = await singupUser(userInfos);
-      console.log(data);
+      setLoading(false);
+      setAuth(data.accessToken);
+      toast.success("به فرانت هوکس خوش آمدید");
+      navigate("/");
     } catch (error) {
-      console.log(error);
+      if (error.response.status === 409) {
+        setLoading(false);
+        toast.error("نام کاربری یا رمز عبور موجود است");
+      }
     }
   };
   const formik = useFormik({
@@ -83,7 +104,19 @@ const Signup = () => {
             className="w-full py-4 bg-blue-600 hover:opacity-90 shadow-lg shadow-gray-400 transtion-all duration-200 text-white my-2 rounded-2xl"
             type="submit"
           >
-            ثبت نام
+            {loading ? (
+              <Box
+                sx={{
+                  display: "flex",
+                  width: "100%",
+                  justifyContent: "center",
+                }}
+              >
+                <CircularProgress color="inherit" />
+              </Box>
+            ) : (
+              "ثبت نام"
+            )}
           </button>
         </div>
       </form>
