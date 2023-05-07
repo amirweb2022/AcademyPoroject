@@ -14,7 +14,7 @@ import ServicesSite from "../../components/ServicesSite/ServicesSite";
 import ProductSlider from "../../components/ProductSlider/ProductSlider";
 import ArticlesList from "../../components/ArticlesList/ArticlesList";
 const HomePage = () => {
-  const [allProducts, setAllProducts] = useState(null);
+  const [allProducts, setAllProducts] = useState([]);
   const [popularProduct, setPopularProduct] = useState([]);
   const [persellProduct, setPersellProduct] = useState([]);
   const [articles, setArticles] = useState([]);
@@ -59,7 +59,7 @@ const HomePage = () => {
   return (
     <>
       <TopBar />
-      <Layout>
+      <Layout data={allProducts}>
         <Banner />
         <Wrapper>
           <CoursesHeader title="جدید ترین دوره ها">

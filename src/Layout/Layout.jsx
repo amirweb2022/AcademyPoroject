@@ -1,10 +1,12 @@
 import Navigation from "../components/Navigation/Navigation";
 import React from "react";
-const Layout = ({ children }) => {
+import Footer from "../components/Footer/Footer";
+const Layout = ({ children  , data}) => {
   return (
     <>
       <Navigation />
       {children}
+      <Footer course={data}/>
     </>
   );
 };
