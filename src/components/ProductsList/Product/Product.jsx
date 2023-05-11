@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 const Product = ({ course , display }) => {
   return (
     <div className={`w-full mb-3 md:mb-4 ml-2 ${display} h-full p-2 bg-white flex justify-center items-center flex-col rounded-2xl my-4 shadow-lg`}>
-      <Link to={`/singleProduct/${course.shortName}`} className="w-full">
+      <Link to={`/course/${course.shortName}`} className="w-full">
         <div className="w-full h-full flex justify-center items-center -mt-7 rounded-2xl overflow-hidden shadow-lg shadow-slate-400 relative">
           <img
             src={`http://localhost:4000/courses/covers/${course.cover}`}
@@ -34,7 +34,7 @@ const Product = ({ course , display }) => {
         </div>
       </Link>
       <div className="flex justify-start items-start w-full py-3">
-        <Link to={`/singleProduct/${course.shortName}`}>
+        <Link to={`/course/${course.shortName}`}>
           <h2 className="text-lg font-bold text-slate-700 hover:text-blue-600">
             {course.name}
           </h2>
@@ -47,7 +47,7 @@ const Product = ({ course , display }) => {
         </span>
       </div>
       <div className="flex justify-start items-start w-full py-2">
-        <Link to={`/singleProduct/${course.shortName}`}>
+        <Link to={`/course/${course.shortName}`}>
           <h2 className="text-sm font-bold text-blue-600">
             مشاهده اطلاعات دوره
           </h2>

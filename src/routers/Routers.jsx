@@ -3,6 +3,7 @@ import HomePage from "../Pages/HomePage/HomePage";
 import CoursesPage from "../Pages/CoursesPage/CoursesPage";
 import LoginPage from "../Pages/LoginPage/LoginPage";
 import SignupPage from "../Pages/SignupPage/SignupPage";
+import CoursePage from "../Pages/CoursePage/CoursePage";
 const Routers = () => {
   return (
     <Routes>
@@ -10,6 +11,7 @@ const Routers = () => {
       <Route path="/courses" element={<CoursesPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
+      <Route path="/course/:shortName" element={<CoursePage />} />
     </Routes>
   );
 };

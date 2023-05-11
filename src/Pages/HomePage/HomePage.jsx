@@ -13,20 +13,13 @@ import ProductsList from "../../components/ProductsList/ProductsList";
 import ServicesSite from "../../components/ServicesSite/ServicesSite";
 import ProductSlider from "../../components/ProductSlider/ProductSlider";
 import ArticlesList from "../../components/ArticlesList/ArticlesList";
+import useFetchProducts from "../../hooks/useFetchPoducts";
 const HomePage = () => {
-  const [allProducts, setAllProducts] = useState([]);
+  const allProducts = useFetchProducts();
   const [popularProduct, setPopularProduct] = useState([]);
   const [persellProduct, setPersellProduct] = useState([]);
   const [articles, setArticles] = useState([]);
   useEffect(() => {
-    const getAndShowCourses = async () => {
-      try {
-        const { data } = await getAllProduct();
-        setAllProducts(data.slice(0, 6));
-      } catch (error) {
-        console.log(error);
-      }
-    };
     const getAndShowPopulaCourses = async () => {
       try {
         const { data } = await getPopularProduct();
@@ -46,12 +39,11 @@ const HomePage = () => {
     const getAndShowArticles = async () => {
       try {
         const { data } = await getAllArticles();
-        setArticles(data.slice(0,3));
+        setArticles(data.slice(0, 3));
       } catch (error) {
         console.log(error);
       }
     };
-    getAndShowCourses();
     getAndShowPopulaCourses();
     getAndShowPersellProduct();
     getAndShowArticles();
