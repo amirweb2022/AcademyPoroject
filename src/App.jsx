@@ -1,12 +1,16 @@
 import Routers from "./routers/Routers";
 import AuthProvider from "./Providers/Auth/AuthProvider";
 import { Toaster } from "react-hot-toast";
+import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
 const App = () => {
   return (
-    <AuthProvider>
-      <Toaster />
-      <Routers />
-    </AuthProvider>
+    <>
+      <ScrollToTop />
+      <AuthProvider>
+        <Toaster />
+        <Routers />
+      </AuthProvider>
+    </>
   );
 };
 

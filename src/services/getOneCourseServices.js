@@ -1,8 +1,8 @@
 import http from "./httpService";
-export const getOneCourse = (token, courseShortName) => {
-    return http.post(`/courses/${courseShortName}`, {
+export const getOneCourse = (token, shortName) => {
+    return http.get(`/courses/${shortName}`, {
         headers: {
-            'Authorization' : `Bearer ${token}`,
+            'Authorization': `Bearer ${token}`,
         },
     });
 };
