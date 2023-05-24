@@ -8,13 +8,13 @@ import { useEffect, useState } from "react";
 import moment from "moment-jalaali";
 import saheb from "../../assets/images/saheb.webp";
 import RegisterCommentForm from "../../components/RegiterCommentForm/RegistrCommentForm";
+import SessionCourse from "../../components/SessionsCourse/SessionCourse";
 const CoursePage = () => {
   const allProductasds = useFetchProducts();
   const [productData, setProductData] = useState([]);
   const { shortName } = useParams();
   const token = useAuth();
   useEffect(() => {
-    if (token) {
       const getOneCourseData = async () => {
         try {
           const { data } = await getOneCourse(token, shortName);
@@ -24,8 +24,7 @@ const CoursePage = () => {
         }
       };
       getOneCourseData();
-    }
-  }, []);
+  }, [token]);
   return (
     <Layout data={allProductasds}>
       <Wrapper>
@@ -52,8 +51,26 @@ const CoursePage = () => {
             </div>
           </div>
           <div className="w-full flex-col-reverse gap-y-3 md:gap-y-0 md:flex-row md:px-3 flex justify-start items-start gap-x-2 py-5">
-            <div className="w-full md:w-3/4 bg-white rounded-2xl shadow-sm p-3">
-              {productData.description}
+            <div className="w-full md:w-3/4">
+              <div className="w-full bg-white rounded-2xl shadow-sm px-3 py-5 mb-3">
+                {productData.description}
+              </div>
+              <div className="w-full bg-white rounded-2xl shadow-sm px-3 py-5 mb-3">
+                <div className="w-full text-right">
+                  <h1 className="text-2xl font-bold text-blue-600">
+                    جلسات دوره
+                  </h1>
+                </div>
+                <SessionCourse productData={productData} shortName={shortName} token={token}/>
+              </div>
+              <div className="w-full bg-white rounded-2xl shadow-sm px-3 py-5">
+                <div className="w-full text-right">
+                  <h1 className="text-2xl font-bold text-blue-600">
+                    ثبت دیدگاه
+                  </h1>
+                </div>
+                <RegisterCommentForm shortname={shortName}/>
+              </div>
             </div>
             <div className="w-full md:w-1/4 flex justify-center items-center flex-col gap-y-3">
               <div className="flex justify-center items-center flex-col py-3 px-2 md:p-5 bg-white shadow-sm rounded-2xl w-full">
@@ -70,7 +87,7 @@ const CoursePage = () => {
                 </button>
               </div>
               <CreatorProfile />
-              <RegisterComment shortName={shortName}/>
+              <RegisterComment shortName={shortName} />
             </div>
           </div>
         </div>

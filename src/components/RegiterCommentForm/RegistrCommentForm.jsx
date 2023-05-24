@@ -28,11 +28,15 @@ const RegisterCommentForm = ({ shortname }) => {
       courseShortName: shortname,
       score: values.score,
     };
-    try {
-      await addComment(addNewComment, token);
-      toast.success("ممنون بابت نظرتون");
-    } catch (error) {
-      toast.error(error)
+    if (token) {
+      try {
+        await addComment(addNewComment, token);
+        toast.success("ممنون بابت نظرتون");
+      } catch (error) {
+        toast.error(error);
+      }
+    } else {
+      toast.error("لطفا ابتدا ورود کنید");
     }
   };
   const formik = useFormik({
@@ -47,7 +51,7 @@ const RegisterCommentForm = ({ shortname }) => {
         className="w-full flex justify-start items-center flex-col gap-y-4"
         onSubmit={formik.handleSubmit}
       >
-        <label className="text-sm text-slate-700 text-right w-full">
+        <label className="text-sm text-slate-600 text-right w-full mt-3">
           امتیاز را وارد کنید:
         </label>
         <SelectOptions formik={formik} name="score" options={options} />

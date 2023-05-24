@@ -99,7 +99,7 @@ const Footer = ({ course }) => {
                 return (
                   <li className="list-disc py-2 list-inside" key={i}>
                     <NavLink
-                      to={`/singleProduct/${course.shortName}`}
+                      to={`/course/${course.shortName}`}
                       className="py-2 transition-all text-slate-500 duration-300 hover:text-blue-500"
                     >
                       {course.name}
