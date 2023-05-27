@@ -114,7 +114,7 @@ const Navigation = () => {
           <nav className="flex items-center justify-between">
             <div className="flex justify-center items-center">
               <div className="flex justify-center items-center md:hidden">
-                <TemporaryDrawer nav_Link={nav_Link} data={userData}/>
+                <TemporaryDrawer nav_Link={nav_Link} data={userData} />
                 <div>
                   <Button sx={{ marginRight: "-10px" }}>
                     <NavLink to="/">
@@ -215,7 +215,7 @@ const Navigation = () => {
               </div>
               <div>
                 {userData ? (
-                  <AccountMenu data={userData}/>
+                  <AccountMenu data={userData} />
                 ) : (
                   <Link
                     to="/login"
@@ -248,7 +248,7 @@ const Navigation = () => {
 };
 
 export default React.memo(Navigation);
-export function AccountMenu({data}) {
+export function AccountMenu({ data }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const clickHandler = () => {
     localStorage.removeItem("authState");
@@ -294,9 +294,10 @@ export function AccountMenu({data}) {
         PaperProps={{
           elevation: 0,
           sx: {
-            width : "220px",
+            width: "220px",
             overflow: "visible",
             filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+            borderRadius: "12px",
             mt: 1.5,
             "& .MuiAvatar-root": {
               width: 32,

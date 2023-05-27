@@ -9,21 +9,22 @@ import moment from "moment-jalaali";
 import saheb from "../../assets/images/saheb.webp";
 import RegisterCommentForm from "../../components/RegiterCommentForm/RegistrCommentForm";
 import SessionCourse from "../../components/SessionsCourse/SessionCourse";
+import CommentList from "../../components/CommentList/CommentList";
 const CoursePage = () => {
   const allProductasds = useFetchProducts();
   const [productData, setProductData] = useState([]);
   const { shortName } = useParams();
   const token = useAuth();
   useEffect(() => {
-      const getOneCourseData = async () => {
-        try {
-          const { data } = await getOneCourse(token, shortName);
-          setProductData(data);
-        } catch (error) {
-          console.log(error);
-        }
-      };
-      getOneCourseData();
+    const getOneCourseData = async () => {
+      try {
+        const { data } = await getOneCourse(token, shortName);
+        setProductData(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getOneCourseData();
   }, [token]);
   return (
     <Layout data={allProductasds}>
@@ -51,26 +52,27 @@ const CoursePage = () => {
             </div>
           </div>
           <div className="w-full flex-col-reverse gap-y-3 md:gap-y-0 md:flex-row md:px-3 flex justify-start items-start gap-x-2 py-5">
-            <div className="w-full md:w-3/4">
-              <div className="w-full bg-white rounded-2xl shadow-sm px-3 py-5 mb-3">
+            <div className="w-full md:w-3/4 flex flex-col gap-y-3">
+              {/* description */}
+              <WrapperDivDetailsCourse>
                 {productData.description}
-              </div>
-              <div className="w-full bg-white rounded-2xl shadow-sm px-3 py-5 mb-3">
-                <div className="w-full text-right">
-                  <h1 className="text-2xl font-bold text-blue-600">
-                    جلسات دوره
-                  </h1>
-                </div>
-                <SessionCourse productData={productData} shortName={shortName} token={token}/>
-              </div>
-              <div className="w-full bg-white rounded-2xl shadow-sm px-3 py-5">
-                <div className="w-full text-right">
-                  <h1 className="text-2xl font-bold text-blue-600">
-                    ثبت دیدگاه
-                  </h1>
-                </div>
-                <RegisterCommentForm shortname={shortName}/>
-              </div>
+              </WrapperDivDetailsCourse>
+              {/* comments */}
+              <WrapperDivDetailsCourse title="دیدگاه">
+                <CommentList comments={productData.comments} />
+              </WrapperDivDetailsCourse>
+              {/* session course */}
+              <WrapperDivDetailsCourse title="جلسات دوره">
+                <SessionCourse
+                  productData={productData}
+                  shortName={shortName}
+                  token={token}
+                />
+              </WrapperDivDetailsCourse>
+              {/* register comment */}
+              <WrapperDivDetailsCourse title='ثبت دیدگاه'>
+                <RegisterCommentForm shortname={shortName} />
+              </WrapperDivDetailsCourse>
             </div>
             <div className="w-full md:w-1/4 flex justify-center items-center flex-col gap-y-3">
               <div className="flex justify-center items-center flex-col py-3 px-2 md:p-5 bg-white shadow-sm rounded-2xl w-full">
@@ -231,18 +233,12 @@ export const CreatorProfile = () => {
         <img src={saheb} alt="saheb" />
       </div>
       <div className="text-center">
-        <p className="font-bold text-slate-600 mt-1">صاحب محمدی</p>
+        <p className="font-bold text-slate-600 mt-1">امیرمحمد حسین زاده</p>
         <p className="font-bold text-gray-500">مدرس دوره</p>
       </div>
       <div className="w-full px-2 text-gray-500">
         <p class="justify-center leading-6 text-sm">
-          داستان برنامه نویس شدن من برمیگرده به سال 93. همون موقع که برای پروژه
-          های دانشگاه (رشته مهندسی نفت) برنامه نویسی میکردم. کم کم با MATLAB
-          آشنا شدم و بعدا وارد حوزه برنامه نویسی وب شدم و الان حدود 7 ساله که
-          شغل تخصصی من برنامه نویسی وب هست.
-          <strong> علاقه من جاوااسکریپت و خاندانش است. </strong>به همین دلیل
-          فرانت هوکس رو بنا کردم تا تجربه چند ساله رو در قالب دوره های پروژه
-          محور به علاقه مندان این حوزه انتقال بدم ☘️🤍.
+          از 15 سالگی برنامه نویسی رو شروع کردم...
         </p>
       </div>
     </div>
@@ -267,6 +263,16 @@ export const RegisterComment = ({ shortName }) => {
         </button>
       </div>
       {isOpen ? <RegisterCommentForm shortname={shortName} /> : ""}
+    </div>
+  );
+};
+export const WrapperDivDetailsCourse = ({ children, title }) => {
+  return (
+    <div className="w-full bg-white rounded-2xl shadow-sm px-3 py-5">
+      <div className="w-full text-right">
+        <h1 className="text-2xl font-bold text-blue-600">{title}</h1>
+        {children}
+      </div>
     </div>
   );
 };
