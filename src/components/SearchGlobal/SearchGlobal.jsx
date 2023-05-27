@@ -1,16 +1,32 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
 const SearchGlobal = () => {
+  const [search, setSearch] = useState("");
+  const navigate = useNavigate();
+  const changeHandler = (e) => setSearch(e.target.value);
+  const submitHandler = (e) => {
+    e.preventDefault();
+    if (search) {
+      navigate(`/search?result=${search}`);
+    } else {
+      toast.error("مقدار ورودی الزامی است");
+    }
+  };
   return (
     <div className="w-full flex justify-center items-center mt-4 px-2">
-      <form className="w-full md:w-3/4 lg:w-1/2 flex bg-white rounded-md p-1">
+      <form
+        className="w-full md:w-3/4 lg:w-1/2 flex bg-white rounded-md p-1"
+        onSubmit={submitHandler}
+      >
         <input
           type="text"
           className="w-4/5 md:w-11/12 px-4 py-3 text-sm text-slate-700 outline-none"
           placeholder="چه چیزی دوست داری یادبگیری ؟"
+          value={search}
+          onChange={changeHandler}
         />
-        <button
-          className="w-1/5 md:w-1/12 bg-blue-500 text-white rounded-lg transition-all duration-150 hover:bg-blue-600 hover:shadow-md hover:shadow-blue-500"
-          type="submit"
-        >
+        <button className="w-1/5 md:w-1/12 bg-blue-500 text-white rounded-lg transition-all duration-150 hover:bg-blue-600 hover:shadow-md hover:shadow-blue-500">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"

@@ -5,7 +5,6 @@ import Banner from "../../components/Banner/Banner";
 import Wrapper from "../../components/Wrapper/Wrapper";
 import CoursesHeader from "../../components/CoursesHeader/CoursesHeader";
 import { Link } from "react-router-dom";
-import { getAllProduct } from "../../services/getAllProductService";
 import { getPopularProduct } from "../../services/getPopularProductService";
 import { getPersellProduct } from "../../services/getPersellProductServises";
 import { getAllArticles } from "../../services/getAllArticlesService";
