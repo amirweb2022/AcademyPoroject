@@ -57,10 +57,6 @@ const CoursePage = () => {
               <WrapperDivDetailsCourse>
                 {productData.description}
               </WrapperDivDetailsCourse>
-              {/* comments */}
-              <WrapperDivDetailsCourse title="دیدگاه">
-                <CommentList comments={productData.comments} />
-              </WrapperDivDetailsCourse>
               {/* session course */}
               <WrapperDivDetailsCourse title="جلسات دوره">
                 <SessionCourse
@@ -68,6 +64,10 @@ const CoursePage = () => {
                   shortName={shortName}
                   token={token}
                 />
+              </WrapperDivDetailsCourse>
+              {/* comments */}
+              <WrapperDivDetailsCourse title="دیدگاه">
+                <CommentList comments={productData.comments} />
               </WrapperDivDetailsCourse>
               {/* register comment */}
               <WrapperDivDetailsCourse title='ثبت دیدگاه'>

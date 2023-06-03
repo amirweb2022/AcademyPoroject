@@ -5,6 +5,7 @@ import LoginPage from "../Pages/LoginPage/LoginPage";
 import SignupPage from "../Pages/SignupPage/SignupPage";
 import CoursePage from "../Pages/CoursePage/CoursePage";
 import SearchPage from "../Pages/SearchPage/SearchPage";
+import CartPage from "../Pages/CartPage/CartPage";
 const Routers = () => {
   return (
     <Routes>
@@ -14,6 +15,7 @@ const Routers = () => {
       <Route path="/signup" element={<SignupPage />} />
       <Route path="/course/:shortName" element={<CoursePage />} />
       <Route path="/search" element={<SearchPage />} />
+      <Route path="/cart" element={<CartPage />} />
     </Routes>
   );
 };

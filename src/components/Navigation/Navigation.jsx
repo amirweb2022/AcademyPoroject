@@ -11,7 +11,9 @@ import TemporaryDrawer from "../TemporaryDrawer/TemporaryDrawer";
 import { Divider } from "@mui/material";
 import { useAuth } from "../../Providers/Auth/AuthProvider";
 import { getMe } from "../../services/getMeService";
+import { useCart } from "../../Providers/Cart/CartProdvicer";
 const Navigation = () => {
+  const { cart } = useCart();
   const [userData, setUserData] = useState(null);
   const token = useAuth();
   useEffect(() => {
@@ -208,7 +210,7 @@ const Navigation = () => {
                       ></path>
                     </svg>
                     <span className="w-5 h-5 text-white bg-red-500 rounded-full absolute -right-1 -top-1">
-                      0
+                      {cart.length}
                     </span>
                   </button>
                 </Link>

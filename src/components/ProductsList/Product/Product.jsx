@@ -1,8 +1,28 @@
 import { Link } from "react-router-dom";
-
-const Product = ({ course , display }) => {
+import { useCart, useCartActions } from "../../../Providers/Cart/CartProdvicer";
+import { checkInCart } from "../../../utils/checkInCart";
+import { toast } from "react-hot-toast";
+const Product = ({ course, display }) => {
+  const { cart } = useCart();
+  const dispatch = useCartActions();
+  const addToCart = () => {
+    dispatch({
+      type: "ADD_TO_CART",
+      payload: {
+        id: course._id,
+        name: course.name,
+        price: course.price,
+        image: course.cover,
+        shortName: course.shortName,
+        creator: course.creator,
+      },
+    });
+    toast.success(`محصول ${course.name} به سبد خرید اضافه شد`);
+  };
   return (
-    <div className={`w-full mb-3 md:mb-4 ml-2 ${display} h-full p-2 bg-white flex justify-center items-center flex-col rounded-2xl my-4 shadow-lg`}>
+    <div
+      className={`w-full mb-3 md:mb-4 ml-2 ${display} h-full p-2 bg-white flex justify-center items-center flex-col rounded-2xl my-4 shadow-lg`}
+    >
       <Link to={`/course/${course.shortName}`} className="w-full">
         <div className="w-full h-full flex justify-center items-center -mt-7 rounded-2xl overflow-hidden shadow-lg shadow-slate-400 relative">
           <img
@@ -55,9 +75,21 @@ const Product = ({ course , display }) => {
       </div>
       <div className="flex justify-between items-center w-full py-3 border-t-2 border-gray-100 mt-2">
         <div className="w-2/5">
-          <button className="text-white w-full font-bold transtion-all duration-150 bg-blue-500 hover:bg-blue-400 hover:shadow-blue-300 rounded-xl shadow-lg shadow-blue-300 py-3">
-            ثبت نام دوره
-          </button>
+          {checkInCart(cart, course) ? (
+            <Link
+              to="/cart"
+              className="text-white text-center inline-block w-full font-bold transtion-all duration-150 bg-blue-500 hover:bg-blue-400 hover:shadow-blue-300 rounded-xl shadow-lg shadow-blue-300 py-3"
+            >
+              ادامه سفارش
+            </Link>
+          ) : (
+            <button
+              onClick={addToCart}
+              className="text-white w-full font-bold transtion-all duration-150 bg-blue-500 hover:bg-blue-400 hover:shadow-blue-300 rounded-xl shadow-lg shadow-blue-300 py-3"
+            >
+              ثبت نام دوره
+            </button>
+          )}
         </div>
         <div className="w-3/5 text-left mt-3">
           <span className="text-slate-800 font-bold text-xl">
