@@ -22,7 +22,7 @@ const CatPage = () => {
                 <CartPoductList data={cart} />
               </div>
               <div className="w-full lg:w-1/4 bg-white rounded-xl px-4 py-3 flex justify-center items-center flex-col">
-                <CartSummary total={total} />
+                <CartSummary total={total}/>
               </div>
             </div>
           </div>
@@ -110,7 +110,7 @@ export const CartSummary = ({ total }) => {
         </div>
         <div className="w-full">
           <button className="w-full bg-blue-500 text-white hover:opacity-90 mt-3 py-3 rounded-2xl">
-            <Link to="/login/?redirect=checkout">پرداخت سفارش</Link>
+            <Link to="/login/?redirect=checkout">ادامه پرداخت</Link>
           </button>
         </div>
       </div>

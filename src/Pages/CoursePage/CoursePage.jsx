@@ -10,10 +10,13 @@ import saheb from "../../assets/images/saheb.webp";
 import RegisterCommentForm from "../../components/RegiterCommentForm/RegistrCommentForm";
 import SessionCourse from "../../components/SessionsCourse/SessionCourse";
 import CommentList from "../../components/CommentList/CommentList";
+import { useCartActions } from "../../Providers/Cart/CartProdvicer";
+import { toast } from "react-hot-toast";
 const CoursePage = () => {
   const allProductasds = useFetchProducts();
   const [productData, setProductData] = useState([]);
   const { shortName } = useParams();
+  const dispatch = useCartActions();
   const token = useAuth();
   useEffect(() => {
     const getOneCourseData = async () => {
@@ -26,6 +29,20 @@ const CoursePage = () => {
     };
     getOneCourseData();
   }, [token]);
+  const addToCart = () => {
+    dispatch({
+      type: "ADD_TO_CART",
+      payload: {
+        id: productData._id,
+        name: productData.name,
+        price: productData.price,
+        image: productData.cover,
+        shortName: productData.shortName,
+        creator: productData.creator.name,
+      },
+    });
+    toast.success(`محصول ${productData.name} به سبد خرید اضافه شد`);
+  };
   return (
     <Layout data={allProductasds}>
       <Wrapper>
@@ -70,7 +87,7 @@ const CoursePage = () => {
                 <CommentList comments={productData.comments} />
               </WrapperDivDetailsCourse>
               {/* register comment */}
-              <WrapperDivDetailsCourse title='ثبت دیدگاه'>
+              <WrapperDivDetailsCourse title="ثبت دیدگاه">
                 <RegisterCommentForm shortname={shortName} />
               </WrapperDivDetailsCourse>
             </div>
@@ -84,7 +101,10 @@ const CoursePage = () => {
                     {productData.price === 0 ? "" : "تومان"}
                   </span>
                 </span>
-                <button className="w-full py-3 bg-blue-500 rounded-xl text-white text-lg font-bold mt-3 hover:opacity-90 trasnition-all duration-150">
+                <button
+                  className="w-full py-3 bg-blue-500 rounded-xl text-white text-lg font-bold mt-3 hover:opacity-90 trasnition-all duration-150"
+                  onClick={addToCart}
+                >
                   ثبت نام در دوره
                 </button>
               </div>
