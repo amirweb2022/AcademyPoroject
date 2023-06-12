@@ -18,6 +18,7 @@ const CoursePage = () => {
   const { shortName } = useParams();
   const dispatch = useCartActions();
   const token = useAuth();
+  console.log(productData);
   useEffect(() => {
     const getOneCourseData = async () => {
       try {
@@ -92,22 +93,30 @@ const CoursePage = () => {
               </WrapperDivDetailsCourse>
             </div>
             <div className="w-full md:w-1/4 flex justify-center items-center flex-col gap-y-3">
-              <div className="flex justify-center items-center flex-col py-3 px-2 md:p-5 bg-white shadow-sm rounded-2xl w-full">
-                <span className="text-4xl text-slate-600 font-bold">
-                  {productData.price
-                    ? productData.price.toLocaleString("fa-IR")
-                    : "رایگان!"}
-                  <span className="text-sm text-slate-500 mr-2">
-                    {productData.price === 0 ? "" : "تومان"}
+              {productData.isUserRegisteredToThisCourse ? (
+                <div className="w-full">
+                  <span className="w-full bg-blue-600/20 text-center rounded-lg text-sm text-blue-700 py-2 inline-block">
+                    شما دانشجوی این دوره هستید!
                   </span>
-                </span>
-                <button
-                  className="w-full py-3 bg-blue-500 rounded-xl text-white text-lg font-bold mt-3 hover:opacity-90 trasnition-all duration-150"
-                  onClick={addToCart}
-                >
-                  ثبت نام در دوره
-                </button>
-              </div>
+                </div>
+              ) : (
+                <div className="flex justify-center items-center flex-col py-3 px-2 md:p-5 bg-white shadow-sm rounded-2xl w-full">
+                  <span className="text-4xl text-slate-600 font-bold">
+                    {productData.price
+                      ? productData.price.toLocaleString("fa-IR")
+                      : "رایگان!"}
+                    <span className="text-sm text-slate-500 mr-2">
+                      {productData.price === 0 ? "" : "تومان"}
+                    </span>
+                  </span>
+                  <button
+                    className="w-full py-3 bg-blue-500 rounded-xl text-white text-lg font-bold mt-3 hover:opacity-90 trasnition-all duration-150"
+                    onClick={addToCart}
+                  >
+                    ثبت نام در دوره
+                  </button>
+                </div>
+              )}
               <CreatorProfile />
               <RegisterComment shortName={shortName} />
             </div>

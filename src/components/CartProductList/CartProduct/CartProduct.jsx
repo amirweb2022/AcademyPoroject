@@ -1,10 +1,14 @@
 import { Link } from "react-router-dom";
 import { useCartActions } from "../../../Providers/Cart/CartProdvicer";
-const CartProduct = ({ cart }) => {
+const CartProduct = ({ cart, codeOffers }) => {
   const dispatch = useCartActions();
   const removeProduct = (item) => {
     dispatch({ type: "REMOVE_PRODUCT", payload: item });
   };
+  if (codeOffers) {
+    const priceAfterOff = (cart.price * codeOffers) / 100;
+    cart.price = priceAfterOff;
+  }
   return (
     <div className="bg-white rounded-xl w-full lg:w-3/4 flex flex-col lg:flex-row justify-center lg:justify-between items-center px-5 py-7">
       <div className="flex justify-center items-center gap-x-3">

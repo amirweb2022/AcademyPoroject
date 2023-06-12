@@ -1,13 +1,31 @@
 import { useCart } from "../../Providers/Cart/CartProdvicer";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
+import { useEffect, useState } from "react";
+import { registerToCourse } from "../../services/registerToCourse";
+import { useAuth } from "../../Providers/Auth/AuthProvider";
 const CheckOut = () => {
   const { cart, total } = useCart();
+  const [regCourse, setRegCourse] = useState({ id: "", price: "" });
+  const token = useAuth();
+  useEffect(() => {
+    setRegCourse({ id: cart.slice(0)[0].id, price: cart.slice(0)[0].price });
+  }, []);
   const navigate = useNavigate();
-  const clickHandler = () => {
-    navigate("/");
-    window.location.reload();
-    toast.success("پرداخت با موفقیت انجام شد");
+  const clickHandler = async () => {
+    const dataCourse = {
+      price: regCourse.price,
+    };
+    try {
+      await registerToCourse(token, regCourse.id, dataCourse);
+      toast.success("پرداخت با موفقیت انجام شد");
+      navigate("/");
+      window.location.reload();
+    } catch (error) {
+      if (error.response.status === 409) {
+        toast.error("شما دانشجوی دوره هستید!");
+      }
+    }
   };
 
   if (!cart.length) {

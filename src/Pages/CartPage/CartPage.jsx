@@ -1,11 +1,16 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import CartPoductList from "../../components/CartProductList/CartProductList";
 import Wrapper from "../../components/Wrapper/Wrapper";
 import useFetchProducts from "../../hooks/useFetchPoducts";
 import Layout from "../../Layout/Layout";
+import { useAuth } from "../../Providers/Auth/AuthProvider";
 import { useCart } from "../../Providers/Cart/CartProdvicer";
+import { useCodeOffs } from "../../services/useCodeOffs";
+import { toast } from "react-hot-toast";
 const CatPage = () => {
   const { cart, total } = useCart();
+  const [codeOffs, setCodeOffs] = useState("");
   const allProducts = useFetchProducts();
   return (
     <Layout data={allProducts}>
@@ -19,10 +24,14 @@ const CatPage = () => {
             </div>
             <div className="w-full px-3 lg:px-0 gap-y-3 lg:gap-y-0 flex flex-col md:flex-row justify-center items-center md:items-start gap-x-3">
               <div className="w-full lg:w-3/4 flex justify-center items-center flex-col gap-y-3">
-                <CartPoductList data={cart} />
+                <CartPoductList data={cart} code={codeOffs} />
               </div>
               <div className="w-full lg:w-1/4 bg-white rounded-xl px-4 py-3 flex justify-center items-center flex-col">
-                <CartSummary total={total}/>
+                <CartSummary
+                  total={total}
+                  cart={cart}
+                  setCodeOffs={setCodeOffs}
+                />
               </div>
             </div>
           </div>
@@ -44,7 +53,35 @@ const CatPage = () => {
 };
 
 export default CatPage;
-export const CartSummary = ({ total }) => {
+export const CartSummary = ({ total, cart, setCodeOffs }) => {
+  const [offsCourse, setOffsCourse] = useState({ course: "", codeOffs: "" });
+  const [code, setCode] = useState("");
+  const token = useAuth();
+  const changeHandler = (e) => {
+    setCode(e.target.value);
+  };
+  useEffect(() => {
+    const id = cart.slice(0)[0].id;
+    setOffsCourse({ ...offsCourse, course: id, codeOffs: code });
+  }, [code]);
+  const clickHandler = async () => {
+    const dataCourse = {
+      course: offsCourse.course,
+    };
+    try {
+      const { data } = await useCodeOffs(
+        token,
+        dataCourse,
+        offsCourse.codeOffs
+      );
+      setCodeOffs(data.percent);
+      toast.success("تخفیف اعمال شد!");
+    } catch (error) {
+      if (error.response.status === 409) {
+        toast.error("تعداد استفاده از کد تخفیف تمام شده است!");
+      }
+    }
+  };
   return (
     <>
       <div className="w-full flex gap-x-2 border-b-[1px] py-2">
@@ -82,8 +119,14 @@ export const CartSummary = ({ total }) => {
             placeholder="کد تخفیف را وارد کنید"
             className="bg-transparent h-full p-3 outline-none text-slate-600 text-sm transition-all duration-150"
             id="offer"
+            onChange={changeHandler}
+            value={code}
           />
-          <button className="bg-blue-500 text-white rounded-xl px-3 py-2 text-xs">
+          <button
+            className="bg-blue-500 text-white rounded-xl px-3 py-2 text-xs"
+            type="submit"
+            onClick={clickHandler}
+          >
             اعمال کد
           </button>
         </div>
