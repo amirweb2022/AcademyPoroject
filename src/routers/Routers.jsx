@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import HomePage from "../Pages/HomePage/HomePage";
 import CoursesPage from "../Pages/CoursesPage/CoursesPage";
 import LoginPage from "../Pages/LoginPage/LoginPage";
@@ -7,6 +7,8 @@ import CoursePage from "../Pages/CoursePage/CoursePage";
 import SearchPage from "../Pages/SearchPage/SearchPage";
 import CartPage from "../Pages/CartPage/CartPage";
 import CheckOut from "../Pages/CheckOut/CheckOut";
+import Profile from "../Pages/Profile/Profile";
+import DashBordUser from "../Pages/DashbordUser/DashbordUser";
 const Routers = () => {
   return (
     <Routes>
@@ -18,6 +20,9 @@ const Routers = () => {
       <Route path="/search" element={<SearchPage />} />
       <Route path="/cart" element={<CartPage />} />
       <Route path="/login/checkout" element={<CheckOut />} />
+      <Route path="/profile/*" element={<Profile />}>
+        <Route path="dashbord" element={<DashBordUser />}/>
+      </Route>
     </Routes>
   );
 };

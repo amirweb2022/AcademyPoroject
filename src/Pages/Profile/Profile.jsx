@@ -1,44 +1,180 @@
-import { useState } from "react";
-import List from "@mui/material/List";
-import MenuIcon from "@mui/icons-material/Menu";
-import CloseIcon from "@mui/icons-material/Close";
-import Divider from "@mui/material/Divider";
-import Box from "@mui/material/Box";
-import activeImage from "../../assets/svg/indicator.svg";
-import Drawer from "@mui/material/Drawer";
-import avatar from "../../assets/images/avatar.jpg";
-import Stack from "@mui/material/Stack";
-import { styled } from "@mui/material/styles";
-import Avatar from "@mui/material/Avatar";
-import Badge from "@mui/material/Badge";
-import { Button } from "@mui/material";
-import { NavLink, Link } from "react-router-dom";
-import React from "react";
-function TemporaryDrawer({ nav_Link, data }) {
-  const [state, setState] = useState({
-    right: false,
-  });
-
-  const toggleDrawer = (anchor, open) => (event) => {
-    if (
-      event.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
-    ) {
-      return;
+import { Button, Divider, List } from "@mui/material";
+import { useEffect, useState } from "react";
+import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
+import { AccountMenu } from "../../components/Navigation/Navigation";
+import TemporaryDrawer from "../../components/TemporaryDrawer/TemporaryDrawer";
+import {
+  BadgeAvatars,
+  StyledBadge,
+} from "../../components/TemporaryDrawer/TemporaryDrawer";
+import { WrapperUserPanel } from "../../components/Wrapper/Wrapper";
+import { useAuth } from "../../Providers/Auth/AuthProvider";
+import { useCart } from "../../Providers/Cart/CartProdvicer";
+import { getMe } from "../../services/getMeService";
+const Profile = () => {
+  const [userData, setUserData] = useState(null);
+  const [date, setDate] = useState({ time: new Date() });
+  const [timeStatus, setTimeStatus] = useState("");
+  const navigate = useNavigate();
+  const { time } = date;
+  const hours = time.getHours();
+  const token = useAuth();
+  const { cart } = useCart();
+  useEffect(() => {
+    if (!token) {
+      navigate("/");
     }
+    if (hours >= 6 && hours < 12) {
+      setTimeStatus("صبح");
+    } else if (hours >= 12 && hours < 18) {
+      setTimeStatus("ظهر");
+    } else {
+      setTimeStatus("شب");
+    }
+  }, []);
+  useEffect(() => {
+    if (token) {
+      const getMeData = async () => {
+        try {
+          const { data } = await getMe(token);
+          setUserData(data);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      getMeData();
+    }
+  }, [token]);
+  const aside__link = [
+    {
+      display: "داشبورد",
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 22 22"
+          fill="none"
+          className="h-5 w-5"
+        >
+          <path
+            fill="currentColor"
+            d="M20.04 9.719a.75.75 0 0 0-1.5 0h1.5Zm-14.58 0a.75.75 0 1 0-1.5 0h1.5Zm9.053 10.988-.172-.73.172.73Zm-5.026 0 .172-.73-.172.73Zm5.341-15.693-.532.529.532-.529Zm5.64 6.744a.75.75 0 1 0 1.064-1.057l-1.064 1.057ZM9.172 5.014l.532.529-.532-.529Zm-6.704 5.687a.75.75 0 1 0 1.064 1.057l-1.064-1.057Zm7.25 7.62-.737-.14.737.14Zm.02-.104.737.139-.737-.139Zm4.524 0-.737.139.737-.139Zm.02.103.737-.138-.737.138Zm-.29 2.232-.677-.322.677.322Zm-.794-.077a.75.75 0 0 0 1.354.645l-1.354-.645Zm-3.19.077-.677.322.677-.322Zm-.56.568a.75.75 0 0 0 1.354-.645l-1.354.645Zm1.913-4.677-.2-.723.2.723Zm1.278 0 .2-.723-.2.723Zm5.901-6.724v4.918h1.5V9.72h-1.5ZM5.46 14.637V9.72h-1.5v4.918h1.5Zm8.88 5.34a10.18 10.18 0 0 1-4.68 0l-.346 1.46a11.68 11.68 0 0 0 5.372 0l-.345-1.46Zm-4.68 0c-2.457-.58-4.2-2.79-4.2-5.34h-1.5c0 3.24 2.214 6.058 5.354 6.8l.345-1.46Zm5.026 1.46c3.14-.742 5.354-3.56 5.354-6.8h-1.5c0 2.55-1.743 4.76-4.2 5.34l.346 1.46Zm-.39-15.894 6.172 6.215 1.064-1.057-6.171-6.215-1.065 1.057ZM8.64 4.486 2.468 10.7l1.064 1.057 6.172-6.215-1.065-1.057Zm6.722 0c-.652-.657-1.193-1.204-1.68-1.577-.502-.387-1.035-.659-1.681-.659v1.5c.183 0 .397.064.768.348.387.298.847.758 1.528 1.445l1.065-1.057ZM9.704 5.543c.681-.687 1.14-1.147 1.528-1.445.37-.284.585-.348.768-.348v-1.5c-.646 0-1.178.272-1.682.659-.486.373-1.027.92-1.679 1.577l1.065 1.057Zm.752 12.916.019-.103L9 18.079l-.02.103 1.475.277Zm3.07-.103.018.103 1.475-.277-.02-.103-1.474.277Zm-.211 1.874-.117.245 1.354.645.117-.246-1.354-.644Zm-3.984.644.117.246 1.354-.645-.117-.245-1.354.644Zm4.213-2.415c.113.6.032 1.22-.23 1.77l1.355.645c.399-.837.52-1.78.35-2.692l-1.475.277Zm-4.563-.277a4.385 4.385 0 0 0 .35 2.692l1.354-.644a2.884 2.884 0 0 1-.23-1.771l-1.474-.277Zm2.58-1.017c.287-.08.59-.08.877 0l.401-1.445a3.138 3.138 0 0 0-1.678 0l.4 1.445ZM15 18.08a3.024 3.024 0 0 0-2.16-2.36l-.4 1.446c.554.154.978.614 1.086 1.19L15 18.08Zm-4.524.277a1.524 1.524 0 0 1 1.087-1.19l-.401-1.446A3.024 3.024 0 0 0 9 18.079l1.474.277Z"
+          ></path>
+        </svg>
+      ),
+      to: "dashbord",
+    },
+    {
+      display: "دوره های من",
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          class="ml-4 h-5 w-5"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-width="1.5"
+            d="M3.862 10.703a10.891 10.891 0 0 0-.006 5.548 6.03 6.03 0 0 0 4.597 4.368l.155.032a16.66 16.66 0 0 0 6.784 0l.155-.032a6.03 6.03 0 0 0 4.597-4.368 10.89 10.89 0 0 0-.006-5.548c-.577-2.179-2.337-3.875-4.535-4.331a17.698 17.698 0 0 0-7.206 0m-4.535 4.331C4.44 8.524 6.2 6.828 8.397 6.372m-4.535 4.331c-.198.75-.315 1.52-.35 2.292V7.252a4.235 4.235 0 0 1 3.1-4.061A5.26 5.26 0 0 1 8.01 3h.858c1.68 0 3.654 1.311 4.378 3.045-1.206 0-3.662.08-4.85.327m6.214 2.397.043.007a3.71 3.71 0 0 1 3.09 3.664M3.51 13.996v.018l.001.002v-.02Z"
+          ></path>
+        </svg>
+      ),
+      to: "courses",
+    },
+    {
+      display: "سفارش های من",
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          class="ml-4 h-5 w-5"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-width="1.5"
+            d="M8 9h4"
+          ></path>
+          <path
+            fill="currentColor"
+            d="m2.885 15.151.728-.18-.728.18Zm0-6.302.728.18-.728-.18Zm18.23 0 .728-.181-.728.18Zm0 6.302-.728-.18.728.18Zm-6 5.508-.162-.732.163.732Zm-6.23 0 .162-.732-.163.732Zm0-17.318.162.732-.163-.732Zm6.23 0 .163-.732-.162.732ZM8.432 20.558l-.163.733.163-.733Zm7.138 0 .163.733-.163-.733Zm0-17.116-.162.732.162-.732Zm-7.138 0-.163-.733.163.733Zm10.262 11.062-.134.738.134-.738Zm-.058-.011.134-.738-.134.738Zm0-4.986.134.738-.134-.738Zm.058-.01-.134-.738.134.737Zm2.307.99a.75.75 0 0 0 .601-1.374L21 10.487Zm.601 4.4A.75.75 0 1 0 21 13.513l.601 1.374Zm-5.023-2.259-.721.206.721-.206Zm0-1.256.721.206-.72-.206ZM8.593 4.174l.454-.1-.325-1.465-.454.1.325 1.465Zm6.36-.1.454.1.325-1.465-.454-.1-.325 1.464Zm.454 15.752-.454.1.325 1.465.454-.1-.325-1.465Zm-6.36.1-.454-.1-.325 1.465.454.1.325-1.464Zm-5.434-4.955a12.326 12.326 0 0 1 0-5.942l-1.455-.361a13.826 13.826 0 0 0 0 6.664l1.455-.362ZM20.387 9.03c.484 1.95.484 3.99 0 5.94l1.456.362a13.827 13.827 0 0 0 0-6.664l-1.456.362Zm-5.434 10.897a13.65 13.65 0 0 1-5.906 0l-.325 1.464c2.16.479 4.397.479 6.556 0l-.325-1.464ZM9.047 4.073a13.651 13.651 0 0 1 5.906 0l.325-1.464a15.151 15.151 0 0 0-6.556 0l.325 1.464Zm-.454 15.753a6.603 6.603 0 0 1-4.98-4.856l-1.455.362a8.103 8.103 0 0 0 6.11 5.959l.325-1.465Zm7.139 1.465a8.103 8.103 0 0 0 6.11-5.959l-1.455-.362a6.603 6.603 0 0 1-4.98 4.856l.325 1.465Zm-.325-17.117a6.603 6.603 0 0 1 4.98 4.856l1.456-.362a8.103 8.103 0 0 0-6.111-5.959l-.325 1.465ZM8.268 2.709a8.103 8.103 0 0 0-6.11 5.959l1.455.361a6.603 6.603 0 0 1 4.98-4.855l-.325-1.465Zm10.56 11.057-.059-.01-.269 1.475.059.01.269-1.475Zm-.059-3.521.059-.01-.27-1.476-.058.01.27 1.476Zm.059-.01a3.743 3.743 0 0 1 2.172.252l.601-1.374a5.244 5.244 0 0 0-3.042-.354l.269 1.475Zm-.27 5.007a5.244 5.244 0 0 0 3.043-.355L21 13.513a3.743 3.743 0 0 1-2.172.253l-.27 1.476Zm-1.259-2.82a1.538 1.538 0 0 1 0-.844l-1.442-.412a3.038 3.038 0 0 0 0 1.668l1.442-.412ZM18.5 8.77a3.38 3.38 0 0 0-2.643 2.397l1.442.412a1.88 1.88 0 0 1 1.47-1.333L18.5 8.769Zm.27 4.986a1.88 1.88 0 0 1-1.47-1.333l-1.443.412a3.38 3.38 0 0 0 2.643 2.397l.27-1.476Z"
+          ></path>
+        </svg>
+      ),
+      to: "payments",
+    },
+  ];
+  return (
+    <div className="bg-white">
+      <div className="grid grid-cols-12 h-full">
+        <aside className="col-span-12 lg:col-span-3 xl:col-span-2 hidden lg:block px-3 h-full">
+          <AsideProfile nav_Link={aside__link} data={userData} />
+        </aside>
+        <div className="col-span-12 lg:col-span-9 xl:col-span-10 h-full flex flex-col">
+          <header className="bg-white">
+            <div className="flex justify-between items-center py-5 px-4 lg:px-8">
+              <div className="flex items-center gap-x-3">
+                <TemporaryDrawer nav_Link={aside__link} data={userData} />
+                <div className="flex flex-col lg:flex-row justify-start lg:items-center gap-x-2">
+                  <span className="text-sm lg:text-xl font-bold text-slate-600">
+                    سلام; {userData ? userData.name : ""}
+                  </span>
+                  <span className="lg:block hidden h-4 w-0.5 bg-gray-200"></span>
+                  <span className="text-sm text-slate-500 font-bold">
+                    {timeStatus} بخیر
+                  </span>
+                </div>
+              </div>
+              <div className="flex justify-center items-center">
+                <div className="ml-2">
+                  <Link to="/cart">
+                    <button className="border-[1px] border-gray-200 py-2 px-2 rounded-full relative">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        class="h-6 w-6 text-slate-500"
+                      >
+                        <path
+                          fill="currentColor"
+                          d="m3.19 15.437.851-.207-.85.207Zm0-6.182-.85-.208.85.208Zm17.445 0 .85-.208-.85.208Zm0 6.182.85.208-.85-.208Zm-5.76 5.348-.192-.854.192.854Zm-5.924 0-.193.854.193-.854Zm0-16.878.192.854-.192-.854Zm5.924 0 .192-.854-.192.854Zm-6.446 16.76.192-.853-.192.854Zm6.968 0 .192.854-.192-.854Zm0-16.642-.193.853.193-.853Zm-6.968 0-.193-.854.193.854Zm-4.254 1.61-.86.158.86-.158ZM3.47 6.65a.875.875 0 0 0 1.721-.315L3.47 6.65ZM1.327 1.727a.875.875 0 1 0-.308 1.723l.308-1.723Zm6.462 19.334c.087.188.121.4.096.608l1.738.208a2.878 2.878 0 0 0-.247-1.554l-1.587.738Zm.096.608c-.025.21-.107.404-.234.562l1.364 1.096c.334-.416.544-.92.608-1.45l-1.738-.208Zm-.234.562a1.019 1.019 0 0 1-.474.331l.549 1.662c.507-.168.954-.48 1.289-.896L7.65 22.23Zm-.474.331a.968.968 0 0 1-.56.015l-.46 1.688c.516.14 1.06.127 1.569-.041l-.549-1.662Zm-.56.015a1.011 1.011 0 0 1-.487-.305l-1.306 1.165c.356.399.818.688 1.333.828l.46-1.688Zm-.487-.305a1.1 1.1 0 0 1-.261-.547l-1.725.294c.09.527.324 1.02.68 1.418l1.306-1.165Zm-.261-.547a1.13 1.13 0 0 1 .066-.613l-1.622-.658a2.88 2.88 0 0 0-.17 1.565l1.726-.294Zm.066-.613c.078-.193.206-.354.366-.469L5.284 19.22c-.434.31-.77.74-.971 1.235l1.622.658Zm11.487-.302c.15.131.263.307.322.508l1.68-.494a2.833 2.833 0 0 0-.848-1.33l-1.154 1.316Zm.322.508c.06.202.062.417.006.62l1.687.464a2.882 2.882 0 0 0-.014-1.578l-1.678.494Zm.006.62a1.09 1.09 0 0 1-.314.515l1.178 1.294c.396-.36.68-.828.823-1.345l-1.687-.465Zm-.314.515a.997.997 0 0 1-.514.249l.274 1.728a2.748 2.748 0 0 0 1.418-.683l-1.178-1.294Zm-.514.249a.971.971 0 0 1-.557-.077l-.727 1.592a2.72 2.72 0 0 0 1.558.213l-.274-1.728Zm-.557-.077a1.036 1.036 0 0 1-.44-.386l-1.475.943c.289.452.7.812 1.188 1.035l.727-1.592Zm-.44-.386a1.117 1.117 0 0 1-.175-.589l-1.75.02c.006.536.161 1.06.45 1.512l1.474-.943Zm-.175-.589a1.12 1.12 0 0 1 .161-.593l-1.495-.91A2.87 2.87 0 0 0 14 21.67l1.75-.02ZM8.62 4.878l.522-.117-.385-1.708-.522.118.385 1.707Zm6.062-.117.521.117.385-1.707-.522-.118-.384 1.708Zm.521 15.053-.521.117.384 1.708.522-.118-.385-1.707Zm-6.061.117-.522-.117-.385 1.707.522.118.385-1.707ZM4.041 15.23a12.172 12.172 0 0 1 0-5.768l-1.7-.415a13.922 13.922 0 0 0 0 6.598l1.7-.415Zm15.744-5.768a12.171 12.171 0 0 1 0 5.768l1.7.415a13.923 13.923 0 0 0 0-6.598l-1.7.415Zm-5.102 10.47a12.586 12.586 0 0 1-5.54 0l-.385 1.707c2.079.468 4.231.468 6.31 0l-.385-1.707ZM9.143 4.76a12.587 12.587 0 0 1 5.54 0l.384-1.708a14.337 14.337 0 0 0-6.309 0l.385 1.708Zm-.522 15.053c-2.233-.504-4.015-2.27-4.58-4.584l-1.7.415c.717 2.937 2.992 5.222 5.895 5.876l.385-1.707Zm6.968 1.707c2.903-.654 5.179-2.939 5.896-5.876l-1.7-.415c-.565 2.313-2.347 4.08-4.58 4.584l.384 1.707Zm-.385-16.643c2.234.504 4.016 2.27 4.58 4.584l1.7-.415c-.716-2.937-2.992-5.221-5.895-5.876l-.385 1.707ZM8.236 3.171c-2.903.655-5.178 2.939-5.895 5.876l1.7.415c.565-2.313 2.347-4.08 4.58-4.584l-.385-1.707ZM3.7 17.124h16.426v-1.75H3.7v1.75ZM3.314 5.793l.157.856 1.721-.315-.156-.856-1.722.315ZM1.02 3.45c1.147.205 2.073 1.128 2.295 2.343l1.722-.315c-.35-1.907-1.817-3.413-3.71-3.75L1.02 3.45Z"
+                        ></path>
+                        <path
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-width="1.75"
+                          d="m13.423 7.256.047.006c1.993.285 3.453 1.762 3.453 3.494"
+                        ></path>
+                      </svg>
+                      <span className="w-5 h-5 text-white bg-red-500 rounded-full absolute -right-1 -top-1">
+                        {cart.length}
+                      </span>
+                    </button>
+                  </Link>
+                </div>
+                <div>{userData ? <AccountMenu data={userData} /> : ""}</div>
+              </div>
+            </div>
+          </header>
+          <WrapperUserPanel>
+            <Outlet context={[userData]}/>
+          </WrapperUserPanel>
+        </div>
+      </div>
+    </div>
+  );
+};
 
-    setState({ ...state, [anchor]: open });
-  };
-
-  const list = (anchor) => (
-    <Box
-      sx={{ width: 250, height: "100%", position: "relative" }}
-      role="presentation"
-    >
+export default Profile;
+export const AsideProfile = ({ nav_Link, data }) => {
+  return (
+    <div className="h-full relative">
       <div className="w-full flex justify-between items-center py-4">
         <div>
           <Button>
-            <NavLink to="/">
+            <NavLink to="/profile">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width={140}
@@ -63,48 +199,31 @@ function TemporaryDrawer({ nav_Link, data }) {
             </NavLink>
           </Button>
         </div>
-        <div>
-          <Button
-            onClick={toggleDrawer(anchor, false)}
-            sx={{ color: "#475569" }}
-          >
-            <CloseIcon />
-          </Button>
-        </div>
       </div>
       <Divider />
       <List>
         {nav_Link.map((text, index) => (
           <ul
-            className="flex flex-col justify-start items-start px-3 py-2 w-full"
+            className="flex flex-col justify-center items-start px-3 py-2 w-full"
             key={index}
           >
             <NavLink
               to={text.to}
               className={(navClass) =>
                 navClass.isActive
-                  ? "mb-2 text-lg relative text-blue-500 font-bold flex w-full"
-                  : "mb-2 text-lg text-slate-700 font-normal"
+                  ? "mb-2 text-lg text-blue-500 bg-blue-100/60 py-3 rounded-2xl font-bold flex w-full"
+                  : "mb-2 text-lg text-slate-700 font-normal hover:text-blue-500"
               }
             >
-              <div className="absolute h-20 -right-4 -top-6 z-10 md:hidden">
-                <img
-                  alt="indicator"
-                  src={activeImage}
-                  width="17"
-                  height="84"
-                  style={{ color: "transparent" }}
-                />
-              </div>
-              <div className="mr-3 flex">
+              <div className="mr-3 flex justify-center items-center">
                 <span>{text.icon}</span>
-                <span className="mr-2 text-[16px]">{text.display}</span>
+                <span className="mr-2 text-base">{text.display}</span>
               </div>
             </NavLink>
           </ul>
         ))}
       </List>
-      <div className="w-full absolute bottom-4 px-2 py-2 flex justify-cenetr items-center">
+      <div className="w-full px-2 py-2 flex justify-cenetr items-center absolute bottom-5">
         {data ? (
           <div className="w-full flex justify-start items-center">
             <div className="mx-2">
@@ -118,98 +237,15 @@ function TemporaryDrawer({ nav_Link, data }) {
                   {data.name}
                 </span>
               </Link>
-              <span className="block opacity-60 text-sm">{data.role === "USER" ? 'دانشجو' : "ادمین"}</span>
+              <span className="block opacity-60 text-sm">
+                {data.role === "USER" ? "دانشجو" : "ادمین"}
+              </span>
             </div>
           </div>
         ) : (
-          <div className="w-full">
-            <Link
-              to="/login"
-              className="flex items-center w-full shadow-md shadow-none text-slate-700 md:shadow-slate-400 justify-center text-white bg-blue-500 hover:bg-blue-400 transition-all duration-150 rounded-3xl ml-2 py-3 md:px-5"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width={1.5}
-                stroke="currentColor"
-                className="w-7 h-7 ml-1 font-bold"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75"
-                />
-              </svg>
-              <p>ورود</p>
-            </Link>
-          </div>
+          ""
         )}
       </div>
-    </Box>
-  );
-
-  return (
-    <div className="lg:hidden block h-full">
-      {["right"].map((anchor) => (
-        <React.Fragment key={anchor}>
-          <Button
-            onClick={toggleDrawer(anchor, true)}
-            sx={{ width: "10px", color: "#475569" }}
-          >
-            <MenuIcon fontSize="large" />
-          </Button>
-          <Drawer
-            anchor={anchor}
-            open={state[anchor]}
-            onClose={toggleDrawer(anchor, false)}
-          >
-            {list(anchor)}
-          </Drawer>
-        </React.Fragment>
-      ))}
     </div>
   );
-}
-export default TemporaryDrawer;
-export const StyledBadge = styled(Badge)(({ theme }) => ({
-  "& .MuiBadge-badge": {
-    backgroundColor: "#44b700",
-    color: "#44b700",
-    boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
-    "&::after": {
-      position: "absolute",
-      top: 0,
-      left: 0,
-      width: "100%",
-      height: "100%",
-      borderRadius: "50%",
-      animation: "ripple 1.2s infinite ease-in-out",
-      border: "1px solid currentColor",
-      content: '""',
-    },
-  },
-  "@keyframes ripple": {
-    "0%": {
-      transform: "scale(.8)",
-      opacity: 1,
-    },
-    "100%": {
-      transform: "scale(2.4)",
-      opacity: 0,
-    },
-  },
-}));
-export function BadgeAvatars() {
-  return (
-    <Stack direction="row">
-      <StyledBadge
-        overlap="circular"
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-        variant="dot"
-      >
-        <Avatar alt="Remy Sharp" src={avatar} />
-      </StyledBadge>
-    </Stack>
-  );
-}
+};

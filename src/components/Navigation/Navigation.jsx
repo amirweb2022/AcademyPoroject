@@ -314,7 +314,7 @@ export function AccountMenu({ data }) {
       >
         <div className="w-full flex py-2 px-1 justify-cenetr items-center">
           <div className="ml-4">
-            <Link to="/profile">
+            <Link to="/profile/dashbord">
               <Avatar
                 src={avataImage}
                 sx={{ minWidth: "50px", minHeight: "50px" }}
@@ -323,7 +323,7 @@ export function AccountMenu({ data }) {
             </Link>
           </div>
           <div className="flex flex-col justify-start items-start ml-2">
-            <Link to="/profile">
+            <Link to="/profile/dashbord">
               <span className="font-bold block text-gray-500 text-sm">
                 {data.name}
               </span>
@@ -334,7 +334,7 @@ export function AccountMenu({ data }) {
         <Divider />
         <div className="w-ful px-2 py-1">
           <Link
-            to="/profile"
+            to="/profile/dashbord"
             className="w-full p-3 flex justify-start items-start text-gray-500 hover:bg-gray-100 rounded-md hover:text-blue-500"
           >
             <span>
