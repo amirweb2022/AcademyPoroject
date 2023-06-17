@@ -1,5 +1,6 @@
 import { Link, useOutletContext } from "react-router-dom";
 import moment from "moment-jalaali";
+import ProfileCoursesList from "../../components/ProfileCoursesList/ProfileCoursesList";
 const DashBordUser = () => {
   const [userData] = useOutletContext();
   return (
@@ -125,40 +126,7 @@ const DashBordUser = () => {
           آخرین سفارش های من
         </h3>
         <div className="w-full flex flex-col justify-center items-center gap-y-3">
-          {userData && userData.courses.length !== 0
-            ? userData.courses.slice(-2).map((c) => {
-                return (
-                  <div className="w-full flex flex-col gap-x-3 justify-center lg:flex-row lg:justify-start items-start bg-white rounded-lg overflow-hidden">
-                    <div className="w-full lg:w-1/4">
-                      <img
-                        src={`http://localhost:4000/courses/covers/${c.cover}`}
-                        alt={c.name}
-                      />
-                    </div>
-                    <div className="w-full h-full lg:w-3/4">
-                      <div className="h-full flex flex-col justify-start items-start py-3 gap-y-2 px-2 lg:px-0">
-                        <div>
-                          {" "}
-                          <Link to={`/course/${c.shortName}`}>
-                            <h2 className="text-2xl font-bold text-slate-700 hover:text-blue-600">
-                              {c.name}
-                            </h2>
-                          </Link>
-                        </div>
-                        <div className="text-xl">
-                            <span className="text-slate-500">قیمت :</span>
-                            <span className="text-blue-500 font-bold mr-1">{c.price === 0 ? "رایگان" : c.price.toLocaleString("fa-IR")}</span>
-                        </div>
-                        <div className="text-xl">
-                            <span className="text-slate-500">وضعیت دوره :</span>
-                            <span className="text-green-500 font-bold mr-1">{c.isComplete === 0 ? 'درحال ظبط' : 'تکمیل شده'}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })
-            : "سفارشی ندارید"}
+          <ProfileCoursesList userData={userData} count={-2}/>
         </div>
       </div>
     </div>

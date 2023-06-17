@@ -9,6 +9,8 @@ import CartPage from "../Pages/CartPage/CartPage";
 import CheckOut from "../Pages/CheckOut/CheckOut";
 import Profile from "../Pages/Profile/Profile";
 import DashBordUser from "../Pages/DashbordUser/DashbordUser";
+import CoursesUser from "../Pages/CoursesUser/CoursesUser";
+import PaymentsUser from "../Pages/PaymentsUser/PaymentsUser";
 const Routers = () => {
   return (
     <Routes>
@@ -22,6 +24,8 @@ const Routers = () => {
       <Route path="/login/checkout" element={<CheckOut />} />
       <Route path="/profile/*" element={<Profile />}>
         <Route path="dashbord" element={<DashBordUser />}/>
+        <Route path="courses" element={<CoursesUser />}/>
+        <Route path="payments" element={<PaymentsUser />}/>
       </Route>
     </Routes>
   );

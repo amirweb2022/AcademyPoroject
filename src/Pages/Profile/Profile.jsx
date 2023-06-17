@@ -170,7 +170,7 @@ const Profile = () => {
 export default Profile;
 export const AsideProfile = ({ nav_Link, data }) => {
   return (
-    <div className="h-full relative">
+    <div className="h-screen relative">
       <div className="w-full flex justify-between items-center py-4">
         <div>
           <Button>
