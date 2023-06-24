@@ -95,7 +95,7 @@ const Footer = ({ course }) => {
           <h3 className="text-xl mb-4 text-slate-600">دوره های آموزشی</h3>
           <nav>
             <ul className="text-sm">
-              {course.map((course, i) => {
+              {course.slice(-6).map((course, i) => {
                 return (
                   <li className="list-disc py-2 list-inside" key={i}>
                     <NavLink

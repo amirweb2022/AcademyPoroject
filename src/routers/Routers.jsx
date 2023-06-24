@@ -11,6 +11,7 @@ import Profile from "../Pages/Profile/Profile";
 import DashBordUser from "../Pages/DashbordUser/DashbordUser";
 import CoursesUser from "../Pages/CoursesUser/CoursesUser";
 import PaymentsUser from "../Pages/PaymentsUser/PaymentsUser";
+import NotFoundPage from "../Pages/NotFoundPage/NotFoundPage";
 const Routers = () => {
   return (
     <Routes>
@@ -22,6 +23,7 @@ const Routers = () => {
       <Route path="/search" element={<SearchPage />} />
       <Route path="/cart" element={<CartPage />} />
       <Route path="/login/checkout" element={<CheckOut />} />
+      <Route path="*" element={<NotFoundPage />} />
       <Route path="/profile/*" element={<Profile />}>
         <Route path="dashbord" element={<DashBordUser />}/>
         <Route path="courses" element={<CoursesUser />}/>
